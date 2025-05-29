@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  nginx-ssh:
+    build: ./requirements/nginx/.
+    container_name: nginx-container
+    ports:
+      - "8080:80"
+    volumes:
+      - ./requirements/nginx/html:/usr/share/nginx/html   # Mount local html directory to container
+      - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf   # Mount Nginx configuration file
+    networks:
+      - nginx-ssh-network
+    restart: unless-stopped
+networks:
+  nginx-ssh-network:
+    driver: bridge
