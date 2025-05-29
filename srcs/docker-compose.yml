@@ -1,4 +1,4 @@
-version: '3.8'
+
 services:
   nginx-ssh:
     build: ./requirements/nginx/.
@@ -6,6 +6,6 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./requirements/nginx/html/index.html:/usr/share/nginx/html/index.html   # Mount local html directory to container Mount Nginx configuration file
+      - ./srcs/requirements/nginx/html:/usr/share/nginx/html
     restart: unless-stopped
 

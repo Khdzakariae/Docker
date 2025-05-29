@@ -6,11 +6,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Update, install nginx and openssh-server, clean cache
 RUN apt-get update && \
     apt-get install -y nginx openssh-server && \
+    apt install vim && apt install sudo && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy html files to nginx web root (fix the path)
-COPY ./html/index.html /usr/share/nginx/html/index.html
+#COPY ./html/index.html /usr/share/nginx/html
 
 # Copy custom nginx config (make sure this file exists and is correct)
 #COPY ./nginx.conf /etc/nginx/nginx.conf
