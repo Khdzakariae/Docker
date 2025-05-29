@@ -6,6 +6,6 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./requirements/nginx/html/:/usr/share/nginx/html/   # Mount local html directory to container Mount Nginx configuration file
+      - ./requirements/nginx/html/index.html:/usr/share/nginx/html/index.html   # Mount local html directory to container Mount Nginx configuration file
     restart: unless-stopped
 
