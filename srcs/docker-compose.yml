@@ -6,11 +6,6 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./requirements/nginx/html:/usr/share/nginx/html   # Mount local html directory to container
-      - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf   # Mount Nginx configuration file
-    networks:
-      - nginx-ssh-network
+      - ./requirements/nginx/html/:/usr/share/nginx/html/   # Mount local html directory to container Mount Nginx configuration file
     restart: unless-stopped
-networks:
-  nginx-ssh-network:
-    driver: bridge
+

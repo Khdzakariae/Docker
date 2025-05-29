@@ -10,10 +10,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy html files to nginx web root (fix the path)
-COPY ./html /usr/share/nginx/html/
+COPY ./html/* /usr/share/nginx/html/
 
 # Copy custom nginx config (make sure this file exists and is correct)
-COPY ./nginx.conf /etc/nginx/nginx.conf
+#COPY ./nginx.conf /etc/nginx/nginx.conf
 
 # Expose ports (optional, but usually needed)
 EXPOSE 80 22
