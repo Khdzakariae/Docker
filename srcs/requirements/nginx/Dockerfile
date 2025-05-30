@@ -1,26 +1,20 @@
-FROM ubuntu:latest
-
-# Avoid prompts during package installs
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Update, install nginx and openssh-server, clean cache
-
+FROM debian:latest
 
 RUN apt-get update && \
     apt-get install -y nginx openssh-server vim sudo && \
     rm -rf /var/lib/apt/lists/*
 
+RUN useradd -ms /bin/bash zakariae && \
+    echo 'zakariae ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# Copy html files to nginx web root (fix the path)
-COPY ./html/index.html /usr/share/nginx/html
+RUN mkdir -p /var/cache/nginx/client_temp /var/run/nginx /tmp/nginx && \
+    chown -R www-data:www-data /var/cache/nginx /var/run/nginx /tmp/nginx
 
-# Copy custom nginx config (make sure this file exists and is correct)
-#COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY ./html/ /var/www/html
 
-# Expose ports (optional, but usually needed)
-EXPOSE 80 22
+USER zakariae
 
-# Start both services (nginx and ssh) in foreground
-CMD service ssh start && nginx -g 'daemon off;'
+EXPOSE 443
 
-
+CMD ["sudo", "nginx", "-g", "daemon off;"]

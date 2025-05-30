@@ -1,7 +1,6 @@
-
 services:
-  nginx-ssh:
-    build: ./requirements/nginx/.
+  nginx-container:
+    build: ./requirements/nginx/
     container_name: nginx-container
     ports:
       - "8080:80"
