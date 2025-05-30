@@ -8,3 +8,11 @@ services:
       - ./requirements/nginx/html:/usr/share/nginx/html
     restart: unless-stopped
 
+  wordpress-container:
+    build: ./requirements/wordpress/
+    container_name: wordpress-container
+    ports:
+      - "8081:80"
+    volumes:
+      - ./requirements/wordpress/html:/usr/share/wordpress/html
+    restart: unless-stopped
