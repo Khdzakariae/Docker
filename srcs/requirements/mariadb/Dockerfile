@@ -5,6 +5,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY create-user.sh /usr/local/bin/create-user.sh
+
+COPY 50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+
 RUN chmod +x /usr/local/bin/create-user.sh
 
 EXPOSE 3306

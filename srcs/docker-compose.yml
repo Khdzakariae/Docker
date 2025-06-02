@@ -1,11 +1,10 @@
 services:
-
   mariadb-container:
     build:
       context: ./requirements/mariadb/
     container_name: mariadb-container
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
     volumes:
       - mariadb-data:/var/lib/mysql
     networks:
@@ -15,25 +14,37 @@ services:
       MYSQL_USER: zakariae
       MYSQL_PASSWORD: password1
       MYSQL_ROOT_PASSWORD: rootpassword
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   wordpress-container:
-    build: ./requirements/wordpress/
+    build: 
+      context: ./requirements/wordpress/
     container_name: wordpress-container
+    expose:
+      - "9000" 
     volumes:
       - wordpress-data:/var/www/wordpress
     depends_on:
-      - mariadb-container
+      mariadb-container:
+        condition: service_healthy
     networks:
       - inception
     restart: unless-stopped
     environment:
-      WORDPRESS_DB_HOST: mariadb-container
+      WORDPRESS_DB_HOST: mariadb-container:3306
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: zakariae
       WORDPRESS_DB_PASSWORD: password1
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_DEBUG: 1
 
   nginx-container:
-    build: ./requirements/nginx/
+    build: 
+      context: ./requirements/nginx/
     container_name: nginx-container
     ports:
       - "8080:80"
@@ -41,15 +52,86 @@ services:
       - wordpress-data:/var/www/wordpress
       - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - wordpress-container
+      wordpress-container:
+        condition: service_started
     networks:
       - inception
     restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "https://localhost:443", "-k"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
 
 volumes:
   wordpress-data:
+    driver: local
   mariadb-data:
+    driver: local
 
 networks:
   inception:
     driver: bridge
+    # ipam:
+    #   config:
+    #     - subnet: 172.20.0.0/16
+
+
+
+
+
+# services:
+
+#   mariadb-container:
+#     build:
+#       context: ./requirements/mariadb/
+#     container_name: mariadb-container
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - mariadb-data:/var/lib/mysql
+#     networks:
+#       - inception
+#     environment:
+#       MYSQL_DATABASE: wordpress
+#       MYSQL_USER: zakariae
+#       MYSQL_PASSWORD: password1
+#       MYSQL_ROOT_PASSWORD: rootpassword
+
+#   wordpress-container:
+#     build: ./requirements/wordpress/
+#     container_name: wordpress-container
+#     volumes:
+#       - wordpress-data:/var/www/wordpress
+#     depends_on:
+#       - mariadb-container
+#     networks:
+#       - inception
+#     restart: unless-stopped
+#     environment:
+#       WORDPRESS_DB_HOST: mariadb-container
+#       WORDPRESS_DB_NAME: wordpress
+#       WORDPRESS_DB_USER: zakariae
+#       WORDPRESS_DB_PASSWORD: password1
+
+#   nginx-container:
+#     build: ./requirements/nginx/
+#     container_name: nginx-container
+#     ports:
+#       - "8080:80"
+#     volumes:
+#       - wordpress-data:/var/www/wordpress
+#       - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf
+#     depends_on:
+#       - wordpress-container
+#     networks:
+#       - inception
+#     restart: unless-stopped
+
+# volumes:
+#   wordpress-data:
+#   mariadb-data:
+
+# networks:
+#   inception:
+#     driver: bridge
