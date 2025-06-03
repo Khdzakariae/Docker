@@ -17,23 +17,29 @@ sed -i "s/localhost/${DB_HOST}/" "$WP_CONFIG_SAMPLE"
 mv "$WP_CONFIG_SAMPLE" "$WP_CONFIG"
 
 # Wait until WordPress is ready
-until curl -s http://localhost | grep -q "WordPress"; do
-  echo "Waiting for WordPress to be ready..."
-  sleep 5
-done
+# until curl -s http://localhost | grep -q "WordPress"; do
+#   echo "Waiting for WordPress to be ready..."
+#   sleep 5
+# done
 
 # Install WordPress using WP-CLI
 WP_PATH="/var/www/wordpress"
 
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    php wp-cli.phar --info && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
+
 # Install WordPress using WP-CLI
-# wp core install \
-#   --path="$WP_PATH" \
-#   --url="http://localhost:8080" \
-#   --title="inception" \
-#   --admin_user="admin" \
-#   --admin_password="admin123" \
-#   --admin_email="admin@admin.com" \
-#   --skip-email
+wp core install \
+  --path="/var/www/wordpress" \
+  --url="http://localhost:8080" \
+  --title="inception" \
+  --admin_user="admin" \
+  --admin_password="admin123" \
+  --admin_email="admin@admin.com" \
+  --skip-email \
+  --allow-root
 
 # # Optional: discourage search engines from indexing
 # wp option update blog_public 0 --path="$WP_PATH"
