@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Variables
-MYSQL_USER="root"
-MYSQL_PASSWORD="your_root_password"
 CONFIG_FILE="/etc/mysql/mariadb.conf.d/50-server.cnf"
 
 # SQL commands

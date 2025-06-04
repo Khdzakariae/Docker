@@ -1,28 +1,33 @@
 #!/bin/bash
 
+sed -i 's|^listen = .*|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
+
+mkdir -p /var/www/wordpress
+
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    php wp-cli.phar --info && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
+
+curl -o /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz && \
+    tar -xzf /tmp/wordpress.tar.gz -C /var/www && \
+    rm /tmp/wordpress.tar.gz
+
+chown -R www-data:www-data /var/www/wordpress
+
 WP_PATH="/var/www/wordpress"
 WP_CONFIG_SAMPLE="$WP_PATH/wp-config-sample.php"
 WP_CONFIG="$WP_PATH/wp-config.php"
 
-# Replace placeholders with real environment variables
 sed -i "s/database_name_here/${WORDPRESS_DB_NAME}/" "$WP_CONFIG_SAMPLE"
 sed -i "s/username_here/${WORDPRESS_DB_USER}/" "$WP_CONFIG_SAMPLE"
 sed -i "s/password_here/${WORDPRESS_DB_PASSWORD}/" "$WP_CONFIG_SAMPLE"
 
-# Strip port from host if present (e.g., mariadb-container:3306 -> mariadb-container)
 DB_HOST=${WORDPRESS_DB_HOST%%:*}
 sed -i "s/localhost/${DB_HOST}/" "$WP_CONFIG_SAMPLE"
 
-# Rename the sample config file to wp-config.php
 mv "$WP_CONFIG_SAMPLE" "$WP_CONFIG"
 
-# Wait until WordPress is ready
-# until curl -s http://localhost | grep -q "WordPress"; do
-#   echo "Waiting for WordPress to be ready..."
-#   sleep 5
-# done
-
-# Install WordPress using WP-CLI
 WP_PATH="/var/www/wordpress"
 
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
@@ -30,7 +35,6 @@ curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.pha
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 
-# Install WordPress using WP-CLI
 wp core install \
   --path="/var/www/wordpress" \
   --url="http://localhost:8080" \
@@ -40,6 +44,3 @@ wp core install \
   --admin_email="admin@admin.com" \
   --skip-email \
   --allow-root
-
-# # Optional: discourage search engines from indexing
-# wp option update blog_public 0 --path="$WP_PATH"
