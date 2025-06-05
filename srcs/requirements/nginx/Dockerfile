@@ -12,7 +12,8 @@ COPY ./html/ /var/www/html
 
 COPY generate-ssl.sh /usr/local/bin/generate-ssl.sh
 RUN chmod +x /usr/local/bin/generate-ssl.sh
+RUN /usr/local/bin/generate-ssl.sh
 
 EXPOSE 443
 
-CMD ["/usr/local/bin/generate-ssl.sh"]
+CMD ["nginx", "-g", "daemon off;"]

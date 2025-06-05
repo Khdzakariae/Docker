@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nginx -g 'daemon off;'
+
 
 openssl req -x509 -nodes -days 365 \
   -newkey rsa:2048 \
