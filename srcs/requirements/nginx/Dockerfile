@@ -7,12 +7,14 @@ RUN apt-get update && \
 RUN mkdir -p /var/cache/nginx/client_temp /var/run/nginx /tmp/nginx /etc/nginx/ssl && \
     chown -R www-data:www-data /var/cache/nginx /var/run/nginx /tmp/nginx /etc/nginx/ssl
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
 COPY ./html/ /var/www/html
 
-COPY generate-ssl.sh /usr/local/bin/generate-ssl.sh
-RUN chmod +x /usr/local/bin/generate-ssl.sh
-RUN /usr/local/bin/generate-ssl.sh
+RUN openssl req -x509 -nodes -days 365 \
+    -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/privkey.pem \
+    -out /etc/nginx/ssl/cert.pem \
+    -subj "/C=MA/L=BNG/O=1337/CN=localhost"
 
 EXPOSE 443
 

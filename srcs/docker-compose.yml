@@ -13,7 +13,7 @@ services:
       C_DATABASE_NAME : $C_DATABASE_NAME
       C_DATABASE_USER_NAME : $C_DATABASE_USER_NAME
       C_DATABASE_USER_PASS : $C_DATABASE_USER_PASS
-    restart: unless-stopped
+    restart: always
 
 
   wordpress-container:
@@ -28,7 +28,7 @@ services:
       - mariadb-container
     networks:
       - inception
-    restart: unless-stopped
+    restart: always
     environment:
       WORDPRESS_DB_HOST: $WORDPRESS_DB_HOST
       WORDPRESS_DB_NAME: $MYSQL_DATABASE
@@ -45,12 +45,11 @@ services:
       - "443:443"
     volumes:
       - wordpress-data:/var/www/wordpress
-      - ./requirements/nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - wordpress-container
     networks:
       - inception
-    restart: unless-stopped
+    restart: always
 
 volumes:
   wordpress-data:
