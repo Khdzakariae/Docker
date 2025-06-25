@@ -1,6 +1,8 @@
 FROM debian:latest
 
 RUN apt-get update && apt-get install -y \
+    wget \
+    sudo \
     lsb-release \
     ca-certificates \
     apt-transport-https \
@@ -30,4 +32,4 @@ WORKDIR /var/www/wordpress
 
 EXPOSE 9000
 
-CMD ["/bin/bash", "-c", "/usr/local/bin/wp-setup.sh && php-fpm8.2 -F"]
+CMD ["/bin/bash", "-c", "/usr/local/bin/wp-setup.sh"]

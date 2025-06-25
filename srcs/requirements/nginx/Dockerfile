@@ -8,7 +8,6 @@ RUN mkdir -p /var/cache/nginx/client_temp /var/run/nginx /tmp/nginx /etc/nginx/s
     chown -R www-data:www-data /var/cache/nginx /var/run/nginx /tmp/nginx /etc/nginx/ssl
 
 COPY ./nginx.conf /etc/nginx/conf.d/nginx.conf
-COPY ./html/ /var/www/html
 
 RUN openssl req -x509 -nodes -days 365 \
     -newkey rsa:2048 \
