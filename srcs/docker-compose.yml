@@ -30,6 +30,9 @@ services:
       - inception
     restart: always
     environment:
+      ADMIN_USER: $ADMIN_USER
+      ADMIN_PASSWORD: $ADMIN_PASSWORD
+      ADMIN_EMAIL: $ADMIN_EMAIL
       WORDPRESS_DB_HOST: $WORDPRESS_DB_HOST
       WORDPRESS_DB_NAME: $MYSQL_DATABASE
       WORDPRESS_DB_USER: $MYSQL_USER

@@ -28,9 +28,9 @@ wp core install \
   --path="/var/www/wordpress" \
   --url="https://localhost" \
   --title="inception" \
-  --admin_user="admin" \
-  --admin_password="admin123" \
-  --admin_email="admin@admin.com" \
+  --admin_user=$ADMIN_USER \
+  --admin_password=$ADMIN_PASSWORD \
+  --admin_email=$ADMIN_EMAIL \
   --skip-email \
   --allow-root
 
