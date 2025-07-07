@@ -55,10 +55,24 @@ services:
     restart: always
 
 volumes:
-  wordpress-data:
-    driver: local
-  mariadb-data:
-    driver: local
+    nginx-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/zel-khad/data/web
+    wordpress-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/zel-khad/data/web
+    mariadb-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/zel-khad/data/database
 
 networks:
   inception:
