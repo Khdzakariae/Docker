@@ -18,8 +18,8 @@ clean:
 	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down -v
 
 fclean: clean
-	rm -r /Users/zel-khad/data/database
-	rm -r /Users/zel-khad/data/web
+	sudo rm -rf /Users/zel-khad/data/database
+	sudo rm -rf /Users/zel-khad/data/web
 	docker system prune -a -f
 
 restart: clean build
