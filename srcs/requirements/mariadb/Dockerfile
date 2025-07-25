@@ -12,4 +12,4 @@ RUN chmod +x /usr/local/bin/create-user.sh
 
 EXPOSE 3306
 
-CMD ["/bin/bash", "-c", "mariadbd-safe & sleep 2 && /usr/local/bin/create-user.sh && wait"]
+CMD ["/bin/bash", "-c", "mariadbd-safe & sleep 2 && /usr/local/bin/create-user.sh && wait %1"]
