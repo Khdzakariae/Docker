@@ -1,5 +1,7 @@
 FROM debian:latest
 
+WORKDIR /var/www/wordpress
+
 RUN apt-get update && apt-get install -y \
     wget \
     sudo \
@@ -28,7 +30,6 @@ COPY tools/wp-setup.sh /usr/local/bin/wp-setup.sh
 
 RUN chmod +x /usr/local/bin/wp-setup.sh
 
-WORKDIR /var/www/wordpress
 
 EXPOSE 9000
 

@@ -34,6 +34,8 @@ wp core install \
   --skip-email \
   --allow-root
 
+wp user create $WORDPRESS_USER $WORDPRESS_EMAIL --role='subscriber' --user_pass=$WORDPRESS_PASSWORD --allow-root
+
 sudo chown -R www-data:www-data /var/www/wordpress
 sudo chmod -R 755 /var/www/wordpress
 
