@@ -25,6 +25,7 @@ services:
     volumes:
       - wordpress-data:/var/www/wordpress
     depends_on : 
+      - redis-container
       - mariadb-container
     networks:
       - inception
@@ -57,6 +58,15 @@ services:
       - inception
     restart: always
 
+  redis-container:
+    build: ./requirements/bonus/redis/
+    container_name : redis-container
+    volumes:
+      - wordpress-data:/var/www/wordpress
+    networks:
+      - inception
+    restart: always
+    
 volumes:
     nginx-data:
         driver: local

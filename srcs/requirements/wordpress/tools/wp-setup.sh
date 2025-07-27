@@ -18,6 +18,12 @@ sudo sed -i "s/username_here/$WORDPRESS_DB_USER/g" wp-config.php
 sudo sed -i "s/password_here/$WORDPRESS_DB_PASSWORD/g" wp-config.php 
 sudo sed -i "s/define( 'DB_HOST', 'localhost' );/define( 'DB_HOST', 'mariadb-container:3306' );/g" wp-config.php 
 
+sed -i -e "\$a\
+define( 'WP_REDIS_HOST', 'redis-container' );\
+define( 'WP_REDIS_PORT', 6379 );\
+define( 'WP_CACHE_KEY_SALT', 'inception:' );\
+define( 'WP_CACHE', true );
+" /var/www/wordpress/wp-config.php
 
 echo "Waiting for MariaDB to be ready..."
 until mysqladmin ping -h"mariadb-container" --silent; do
@@ -35,6 +41,10 @@ wp core install \
   --allow-root
 
 wp user create $WORDPRESS_USER $WORDPRESS_EMAIL --role='subscriber' --user_pass=$WORDPRESS_PASSWORD --allow-root
+
+wp plugin install redis-cache --activate --allow-root
+
+wp redis enable --allow-root
 
 sudo chown -R www-data:www-data /var/www/wordpress
 sudo chmod -R 755 /var/www/wordpress

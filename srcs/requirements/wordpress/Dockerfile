@@ -22,6 +22,8 @@ RUN apt-get update && apt-get install -y \
     php8.2-mbstring \
     php8.2-cli \
     php8.2-zip \
+    php-mysql \
+    php-redis \
     unzip \
     mariadb-client && \
     rm -rf /var/lib/apt/lists/*
