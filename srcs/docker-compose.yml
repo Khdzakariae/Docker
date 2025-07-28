@@ -43,10 +43,13 @@ services:
       WORDPRESS_USER: $WORDPRESS_USER
       WORDPRESS_PASSWORD: $WORDPRESS_PASSWORD
       WORDPRESS_EMAIL: $WORDPRESS_EMAIL
+      REDIS_HOST: $REDIS_HOST
+      REDIS_PORT: $REDIS_PORT
 
   nginx-container:
     build: 
-      context: ./requirements/nginx/
+      context: ./requirements
+      dockerfile: nginx/Dockerfile
     container_name: nginx-container
     ports:
       - "443:443"

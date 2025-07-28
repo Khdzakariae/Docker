@@ -26,7 +26,7 @@ done
 
 wp core install \
   --path="/var/www/wordpress" \
-  --url="https://localhost" \
+  --url="https://zel-khad.42.fr" \
   --title="inception" \
   --admin_user=$ADMIN_USER \
   --admin_password=$ADMIN_PASSWORD \
@@ -45,6 +45,7 @@ wp config set WP_REDIS_TIMEOUT 1 --allow-root
 wp config set WP_REDIS_READ_TIMEOUT 1 --allow-root
 wp config set WP_REDIS_DATABASE 0 --allow-root
 
+rm wp-content/object-cache.php
 # Enable Redis cache
 wp redis enable --allow-root
 

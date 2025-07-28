@@ -1,19 +1,12 @@
 FROM debian:latest
 
-RUN apt-get update && \
-    apt-get install -y nginx openssh-server vim sudo openssl php8.2-fpm && \
-    rm -rf /var/lib/apt/lists/*
+COPY nginx/tools/setup.sh /setup.sh
+COPY nginx/conf/nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY bonus/website/index.html /website/index.html
 
-RUN mkdir -p /var/cache/nginx/client_temp /var/run/nginx /tmp/nginx /etc/nginx/ssl && \
-    chown -R www-data:www-data /var/cache/nginx /var/run/nginx /tmp/nginx /etc/nginx/ssl
 
-COPY conf/nginx.conf /etc/nginx/conf.d/nginx.conf
 
-RUN openssl req -x509 -nodes -days 365 \
-    -newkey rsa:2048 \
-    -keyout /etc/nginx/ssl/privkey.pem \
-    -out /etc/nginx/ssl/cert.pem \
-    -subj "/C=MA/L=BNG/O=1337/CN=localhost"
+RUN bash /setup.sh && rm /setup.sh
 
 EXPOSE 443
 

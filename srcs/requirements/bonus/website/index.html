@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zakariae El Khadir - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-title {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateY(-2px);
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            color: #e0e0e0;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 300px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            color: #a0a0a0;
+            font-size: 1.2rem;
+        }
+
+        /* Contact Page */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+        }
+
+        .contact-icon {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            color: #764ba2;
+        }
+
+        /* Projects Page */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .project-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .project-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pass {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .status-bonus {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .status-progress {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .project-workload {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-tag {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .project-date {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .project-description {
+            color: #c0c0c0;
+            line-height: 1.6;
+            margin-top: 1rem;
+        }
+
+        /* Skills Page */
+        .skills-overview {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .level-indicator {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.8s ease-in-out;
+        }
+
+        .skills-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .category-title {
+            color: #667eea;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-icon {
+            margin-right: 0.75rem;
+            font-size: 1.5rem;
+        }
+
+        .skill-description {
+            color: #c0c0c0;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .projects-grid,
+            .skills-categories,
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .nav-item {
+                flex: 1;
+                margin-bottom: 0;
+            }
+
+            .nav-link {
+                padding: 0.75rem;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .nav-icon {
+                margin-right: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile-section">
+                <div class="profile-img">ZE</div>
+                <h2 class="profile-name">Zakariae El Khadir</h2>
+                <p class="profile-title">Software Developer | 1337 Student</p>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link" title="LinkedIn">
+                        <span>💼</span>
+                    </a>
+                    <a href="#" class="social-link" title="GitHub">
+                        <span>🐱</span>
+                    </a>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link active" data-page="contact">
+                            <span class="nav-icon">📧</span>
+                            Contact
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#projects" class="nav-link" data-page="projects">
+                            <span class="nav-icon">💻</span>
+                            Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#skills" class="nav-link" data-page="skills">
+                            <span class="nav-icon">🎯</span>
+                            Skills
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Contact Page -->
+            <div id="contact" class="page active">
+                <div class="page-header">
+                    <h1 class="page-title">Get In Touch</h1>
+                    <p class="page-subtitle">Let's connect and build something amazing together</p>
+                </div>
+
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <h3>Personal Information</h3>
+                        <div class="contact-item">
+                            <span class="contact-icon">👤</span>
+                            <span>Zakariae El Khadir</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📅</span>
+                            <span>Born: February 24, 2003</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <span>Jorf El Melha, Morocco</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <h3>Education</h3>
+                        <div class="contact-item">
+                            <span class="contact-icon">🎓</span>
+                            <span>1337 Coding School</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <span>Ben Guerir, Morocco</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📅</span>
+                            <span>Started: October 30, 2023</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">⭐</span>
+                            <span>Current Level: 7.87/21</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <h3>Current Status</h3>
+                        <div class="contact-item">
+                            <span class="contact-icon">🎯</span>
+                            <span>Common Core Progress: 57%</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📚</span>
+                            <span>Status: In Common Core</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">🚀</span>
+                            <span>Available for opportunities</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Page -->
+            <div id="projects" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">My Projects</h1>
+                    <p class="page-subtitle">A showcase of my coding journey at 1337</p>
+                </div>
+
+                <div class="projects-grid" id="projectsContainer">
+                    <!-- Projects will be dynamically populated here -->
+                </div>
+            </div>
+
+            <!-- Skills Page -->
+            <div id="skills" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Skills & Expertise</h1>
+                    <p class="page-subtitle">Technical competencies developed through rigorous practice</p>
+                </div>
+
+                <div class="skills-overview">
+                    <div class="level-indicator">Level 7.87</div>
+                    <h3>Common Core Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 57%"></div>
+                    </div>
+                    <p>57% Complete • Currently in Common Core Phase</p>
+                </div>
+
+                <div class="skills-categories" id="skillsContainer">
+                    <!-- Skills will be dynamically populated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Portfolio data structure
+        const portfolioData = {
+            profile: {
+                name: "Zakariae El Khadir",
+                birthDate: "February 24, 2003",
+                birthPlace: "JORF EL MELHA, Morocco",
+                school: "1337 coding school",
+                schoolLocation: "Ben Guerir, Morocco",
+                startDate: "October 30, 2023",
+                currentLevel: "7.87",
+                maxLevel: "21",
+                commonCoreProgress: "57%",
+                status: "in the Common Core"
+            },
+            projects: [
+                {
+                    name: "Inception",
+                    workload: "210H",
+                    status: "in progress",
+                    skills: ["Rigor", "Network & system administration"],
+                    validationDate: "-",
+                    description: "Docker containerization project focusing on system administration and network configuration."
+                },
+                {
+                    name: "webserv",
+                    workload: "175H",
+                    status: "Pass with bonus",
+                    skills: ["Rigor", "Unix", "Network & system administration", "Object-oriented programming"],
+                    validationDate: "March 15, 2025",
+                    description: "This project aims to create your own HTTP server. You will be able to test it with a real web browser. HTTP is one of the most used protocols on the internet."
+                },
+                {
+                    name: "cub3d",
+                    workload: "280H",
+                    status: "Pass with bonus",
+                    skills: ["Rigor", "Algorithms & AI", "Imperative programming", "Graphics"],
+                    validationDate: "December 03, 2024",
+                    description: "This project is inspired by the world-famous eponymous 90's game, which was the first FPS ever. It will enable you to explore ray-casting."
+                },
+                {
+                    name: "minishell",
+                    workload: "210H",
+                    status: "Pass with bonus",
+                    skills: ["Rigor", "Unix", "Imperative programming"],
+                    validationDate: "September 19, 2024",
+                    description: "The objective of this project is for you to create a simple shell."
+                },
+                {
+                    name: "Philosophers",
+                    workload: "70H",
+                    status: "Pass with bonus",
+                    skills: ["Rigor", "Unix", "Imperative programming"],
+                    validationDate: "July 30, 2024",
+                    description: "This project aims to teach concurrent programming, focusing on multithreading and multiprocessing."
+                },
+                {
+                    name: "push_swap",
+                    workload: "60H",
+                    status: "Pass with bonus",
+                    skills: ["Rigor", "Unix", "Algorithms & AI", "Imperative programming"],
+                    validationDate: "May 09, 2024",
+                    description: "This project involves sorting data on a stack, with a limited set of instructions, and using the smallest number of moves."
+                }
+            ],
+            skills: {
+                "Algorithms & AI": {
+                    icon: "🧠",
+                    description: "Standards algorithms on standard structures: searching, sorting, insertion, deletion, balance, on: arrays, linked lists, trees. State machine and asynchronous management."
+                },
+                "Graphics": {
+                    icon: "🎨",
+                    description: "Image management, RGB structure of an image, manipulating areas, drawing into an image, interacting with the window management system and getting user events and inputs from keyboard and mouse."
+                },
+                "Imperative Programming": {
+                    icon: "💻",
+                    description: "Basics of coding in C: the C syntax, variable, loops, conditional branches, functions, recursivity, instructions, calculus and expressions, comparisons operators, standard and advanced types."
+                },
+                "Object-oriented Programming": {
+                    icon: "🔧",
+                    description: "Object programming principles in C++, classes, namespaces, constructors and destructors, memory management in C++, inheritance, abstraction, overloading, templates."
+                },
+                "Network & System Administration": {
+                    icon: "🌐",
+                    description: "Basics of computer networking: IP addresses, subnets, default routing, local network structure, host to host connectivity to network services. System administration with Linux."
+                },
+                "Web Development": {
+                    icon: "🌍",
+                    description: "The client-server architecture involved in the web, HTTP protocol, HTML, CSS, Javascript, backend frameworks, MVC model, user web services."
+                },
+                "System Programming": {
+                    icon: "⚙️",
+                    description: "Classic Unix system interactions: system calls, filesystem access and management, process creation, execution, management; inter-process communications."
+                }
+            }
+        };
+
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all nav links and pages
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    pages.forEach(page => page.classList.remove('active'));
+                    
+                    // Add active class to clicked nav link
+                    this.classList.add('active');
+                    
+                    // Show corresponding page
+                    const targetPage = this.getAttribute('data-page');
+                    document.getElementById(targetPage).classList.add('active');
+                });
+            });
+
+            // Populate projects
+            populateProjects();
+            
+            // Populate skills
+            populateSkills();
+        });
+
+        function populateProjects() {
+            const container = document.getElementById('projectsContainer');
+            container.innerHTML = '';
+
+            portfolioData.projects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                
+                let statusClass = 'status-pass';
+                if (project.status.includes('bonus')) {
+                    statusClass = 'status-bonus';
+                } else if (project.status === 'in progress') {
+                    statusClass = 'status-progress';
+                }
+
+                projectCard.innerHTML = `
+                    <div class="project-header">
+                        <h3 class="project-name">${project.name}</h3>
+                        <span class="project-status ${statusClass}">${project.status}</span>
+                    </div>
+                    <div class="project-workload">⏱️ ${project.workload}</div>
+                    <div class="project-skills">
+                        ${project.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                    <div class="project-date">📅 ${project.validationDate}</div>
+                    <div class="project-description">${project.description}</div>
+                `;
+
+                container.appendChild(projectCard);
+            });
+        }
+
+        function populateSkills() {
+            const container = document.getElementById('skillsContainer');
+            container.innerHTML = '';
+
+            Object.entries(portfolioData.skills).forEach(([skillName, skillData]) => {
+                const skillCard = document.createElement('div');
+                skillCard.className = 'skill-category';
+                
+                skillCard.innerHTML = `
+                    <h3 class="category-title">
+                        <span class="category-icon">${skillData.icon}</span>
+                        ${skillName}
+                    </h3>
+                    <p class="skill-description">${skillData.description}</p>
+                `;
+
+                container.appendChild(skillCard);
+            });
+        }
+
+        // Update portfolio data function (for future use)
+        function updatePortfolioData(newData) {
+            Object.assign(portfolioData, newData);
+            populateProjects();
+            populateSkills();
+        }
+    </script>
+</body>
+</html>
