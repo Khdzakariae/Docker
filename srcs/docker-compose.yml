@@ -71,6 +71,27 @@ services:
     networks:
       - inception
     restart: always
+  adminer-container:
+    build: ./requirements/bonus/Adminer/
+    container_name : adminer-container
+    volumes:
+      - wordpress-data:/usr/share
+    networks:
+      - inception
+    restart: always
+  ftp-container:
+    build: ./requirements/bonus/ftp/
+    container_name : ftp-container
+    ports:
+      - "21:21"
+      - "21000-21010:21000-21010"
+    volumes:
+      - wordpress-data:/var/www/wordpress
+    depends_on:
+      - wordpress-container
+    networks:
+      - inception
+    restart: always
     
 volumes:
     nginx-data:
@@ -91,6 +112,12 @@ volumes:
             type: none
             o: bind
             device: /Users/zel-khad/data/database
+    adminer-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /Users/zel-khad/data/web
 
 networks:
   inception:
