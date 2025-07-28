@@ -6,7 +6,7 @@ services:
     expose:
       - "3306"
     volumes:
-      - mariadb-data:/var/lib/mysql
+        - mariadb-data:/var/lib/mysql
     networks:
       - inception
     environment:
@@ -63,6 +63,8 @@ services:
     container_name : redis-container
     volumes:
       - wordpress-data:/var/www/wordpress
+    ports:
+      - "6379:6379"
     networks:
       - inception
     restart: always
