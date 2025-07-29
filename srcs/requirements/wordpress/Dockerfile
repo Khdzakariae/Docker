@@ -1,6 +1,6 @@
 FROM debian:latest
 
-WORKDIR /var/www/wordpress
+WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
     wget \
@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     lsb-release \
     ca-certificates \
     apt-transport-https \
+    netcat-openbsd \
     gnupg \
     curl && \
     curl -sSL https://packages.sury.org/php/apt.gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/php.gpg && \
@@ -28,14 +29,12 @@ RUN apt-get update && apt-get install -y \
     mariadb-client && \
     rm -rf /var/lib/apt/lists/*
 
-    
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
-
+    
 COPY tools/wp-setup.sh /usr/local/bin/wp-setup.sh
 
 RUN chmod +x /usr/local/bin/wp-setup.sh
 
-
 EXPOSE 9000
 
-CMD ["/bin/bash", "-c", "/usr/local/bin/wp-setup.sh"]
+CMD ["/usr/local/bin/wp-setup.sh"]

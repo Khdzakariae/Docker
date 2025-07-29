@@ -4,8 +4,8 @@ DOCKER_COMPOSE=docker compose
 DOCKER_COMPOSE_FILE = ./srcs/docker-compose.yml
 
 build:
-	mkdir -p /Users/zel-khad/data/database
-	mkdir -p /Users/zel-khad/data/web
+	mkdir -p /home/zel-khad/data/database
+	mkdir -p /home/zel-khad/data/web
 	@$(DOCKER_COMPOSE)  -f $(DOCKER_COMPOSE_FILE) up --build -d
 
 kill:
@@ -18,8 +18,8 @@ clean:
 	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down -v
 
 fclean: clean
-	sudo rm -rf /Users/zel-khad/data/database
-	sudo rm -rf /Users/zel-khad/data/web
+	rm -rf /home/zel-khad/data/database
+	rm -rf /home/zel-khad/data/web
 	docker system prune -a -f
 
 restart: clean build

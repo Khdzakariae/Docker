@@ -1,4 +1,4 @@
-services:
+services:  
   mariadb-container:
     build:
       context: ./requirements/mariadb/
@@ -9,12 +9,9 @@ services:
         - mariadb-data:/var/lib/mysql
     networks:
       - inception
-    environment:
-      C_DATABASE_NAME : $C_DATABASE_NAME
-      C_DATABASE_USER_NAME : $C_DATABASE_USER_NAME
-      C_DATABASE_USER_PASS : $C_DATABASE_USER_PASS
+    env_file:
+      - .env
     restart: always
-
 
   wordpress-container:
     build: 
@@ -23,29 +20,20 @@ services:
     expose:
       - "9000" 
     volumes:
-      - wordpress-data:/var/www/wordpress
+      - wordpress-data:/var/www/html
     depends_on : 
       - redis-container
       - mariadb-container
     networks:
       - inception
+    env_file:
+      - .env
     restart: always
-    environment:
-      ADMIN_USER: $ADMIN_USER
-      ADMIN_PASSWORD: $ADMIN_PASSWORD
-      ADMIN_EMAIL: $ADMIN_EMAIL
-      WORDPRESS_DB_HOST: $WORDPRESS_DB_HOST
-      WORDPRESS_DB_NAME: $MYSQL_DATABASE
-      WORDPRESS_DB_USER: $MYSQL_USER
-      WORDPRESS_DB_PASSWORD: $MYSQL_PASSWORD
-      WORDPRESS_TABLE_PREFIX: $WORDPRESS_TABLE_PREFIX
-      WORDPRESS_DEBUG: $WORDPRESS_DEBUG
-      WORDPRESS_USER: $WORDPRESS_USER
-      WORDPRESS_PASSWORD: $WORDPRESS_PASSWORD
-      WORDPRESS_EMAIL: $WORDPRESS_EMAIL
-      REDIS_HOST: $REDIS_HOST
-      REDIS_PORT: $REDIS_PORT
-
+    healthcheck:
+      test: ["CMD", "sh", "-c", "nc -z localhost 9000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   nginx-container:
     build: 
       context: ./requirements
@@ -54,18 +42,18 @@ services:
     ports:
       - "443:443"
     volumes:
-      - wordpress-data:/var/www/wordpress
+      - wordpress-data:/var/www/html
     depends_on:
-      - wordpress-container
+      wordpress-container:
+        condition: service_healthy
     networks:
       - inception
     restart: always
-
   redis-container:
     build: ./requirements/bonus/redis/
     container_name : redis-container
     volumes:
-      - wordpress-data:/var/www/wordpress
+      - wordpress-data:/var/www/html
     ports:
       - "6379:6379"
     networks:
@@ -78,6 +66,9 @@ services:
       - wordpress-data:/usr/share
     networks:
       - inception
+    depends_on:
+      wordpress-container:
+        condition: service_healthy
     restart: always
   ftp-container:
     build: ./requirements/bonus/ftp/
@@ -86,12 +77,13 @@ services:
       - "21:21"
       - "21000-21010:21000-21010"
     volumes:
-      - wordpress-data:/var/www/wordpress
-    depends_on:
-      - wordpress-container
+      - wordpress-data:/var/www/html
     networks:
       - inception
+    env_file:
+      - .env
     restart: always
+
     
 volumes:
     nginx-data:
@@ -99,25 +91,25 @@ volumes:
         driver_opts:
             type: none
             o: bind
-            device: /Users/zel-khad/data/web
+            device: /home/zel-khad/data/web
     wordpress-data:
         driver: local
         driver_opts:
             type: none
             o: bind
-            device: /Users/zel-khad/data/web
+            device: /home/zel-khad/data/web
     mariadb-data:
         driver: local
         driver_opts:
             type: none
             o: bind
-            device: /Users/zel-khad/data/database
+            device: /home/zel-khad/data/database
     adminer-data:
         driver: local
         driver_opts:
             type: none
             o: bind
-            device: /Users/zel-khad/data/web
+            device: /home/zel-khad/data/web
 
 networks:
   inception:

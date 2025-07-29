@@ -14,7 +14,4 @@ openssl req -x509 -nodes -days 365 \
   -out /etc/nginx/ssl/cert.pem \
   -subj "/C=MA/L=BNG/O=1337/CN=zel-khad.42.fr"
 
-
-
-
 mkdir -p website
