@@ -15,10 +15,10 @@ sudo sed -i "s/password_here/$WORDPRESS_DB_PASSWORD/g" wp-config.php
 sudo sed -i "s/define( 'DB_HOST', 'localhost' );/define( 'DB_HOST', 'mariadb-container:3306' );/g" wp-config.php 
 sudo sed -i "/That's all, stop editing/i define('FS_METHOD', 'direct');" wp-config.php
 
-# echo "Waiting for MariaDB to be ready..."
-# until mysqladmin ping -h"mariadb-container" --silent; do
-#   sleep 2
-# done
+echo "Waiting for MariaDB to be ready..."
+until mysqladmin ping -h"mariadb-container" --silent; do
+  sleep 1
+done
 
 wp core install \
   --path="/var/www/html" \
