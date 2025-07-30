@@ -1,4 +1,14 @@
 services:
+  adminer-container:
+    build: ./requirements/bonus/Adminer/
+    container_name : adminer-container
+    networks:
+      - inception
+    depends_on:
+      wordpress-container:
+        condition: service_healthy
+    restart: always
+
   mariadb-container:
     build:
       context: ./requirements/mariadb/
@@ -13,7 +23,6 @@ services:
       - .env
     restart: always
 
-
   wordpress-container:
     build: 
       context: ./requirements/wordpress/
@@ -27,9 +36,14 @@ services:
       - mariadb-container
     networks:
       - inception
-    restart: always
     env_file:
       - .env
+    restart: always
+    healthcheck:
+      test: ["CMD", "sh", "-c", "nc -z localhost 9000"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   nginx-container:
     build: 
@@ -41,7 +55,8 @@ services:
     volumes:
       - wordpress-data:/var/www/html
     depends_on:
-      - wordpress-container
+      wordpress-container:
+        condition: service_healthy
     networks:
       - inception
     restart: always
@@ -56,14 +71,7 @@ services:
     networks:
       - inception
     restart: always
-  adminer-container:
-    build: ./requirements/bonus/Adminer/
-    container_name : adminer-container
-    volumes:
-      - wordpress-data:/usr/share
-    networks:
-      - inception
-    restart: always
+  
   ftp-container:
     build: ./requirements/bonus/ftp/
     container_name : ftp-container
@@ -72,11 +80,12 @@ services:
       - "21000-21010:21000-21010"
     volumes:
       - wordpress-data:/var/www/html
-    depends_on:
-      - wordpress-container
     networks:
       - inception
+    env_file:
+      - .env
     restart: always
+
     
 volumes:
     nginx-data:
@@ -97,12 +106,6 @@ volumes:
             type: none
             o: bind
             device: /home/zel-khad/data/database
-    adminer-data:
-        driver: local
-        driver_opts:
-            type: none
-            o: bind
-            device: /home/zel-khad/data/web
 
 networks:
   inception:
