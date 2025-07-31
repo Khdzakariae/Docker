@@ -86,6 +86,17 @@ services:
       - .env
     restart: always
 
+  msmtp-container:
+    build: ./requirements/bonus/msmtp
+    container_name: msmtp-container
+    ports:
+      - "25:25"
+    networks:
+      - inception
+    env_file:
+      - .env
+    restart: always
+
     
 volumes:
     nginx-data:
