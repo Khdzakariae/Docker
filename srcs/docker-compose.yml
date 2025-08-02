@@ -87,14 +87,27 @@ services:
     restart: always
 
   msmtp-container:
+    env_file:
+      - .env
     build: ./requirements/bonus/msmtp
     container_name: msmtp-container
     ports:
       - "25:25"
     networks:
       - inception
+    restart: always
+
+  rsyslog-container:
     env_file:
       - .env
+    build: ./requirements/bonus/rsyslog
+    container_name: rsyslog-container
+    ports:
+      - "514:514/udp"
+    volumes:
+      - ./logs:/var/log/remote
+    networks:
+      - inception
     restart: always
 
     

@@ -1,10 +1,11 @@
 #!/bin/bash
 set -e
 
-apt-get update && apt-get install -y \
-    postfix \
-    msmtp \
-    ca-certificates \
-    && update-ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+echo "gmail pass is :${GMAIL_PASS}"
 
+sed -i "s|GMAIL_PORT_HERE|${GMAIL_PORT}|g" /etc/msmtprc
+sed -i "s|GMAIL_PASS_HERE|${GMAIL_PASS}|g" /etc/msmtprc
+sed -i "s|GMAIL_USER_HERE|${GMAIL_USER}|g" /etc/msmtprc
+sed -i "s|GMAIL_HOST_HERE|${GMAIL_HOST}|g" /etc/msmtprc
+
+exec "$@"

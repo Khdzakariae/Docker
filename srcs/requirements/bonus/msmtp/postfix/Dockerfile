@@ -1,19 +1,16 @@
 FROM debian:latest
 
+# Install msmtp and SASL auth modules
 RUN apt-get update && apt-get install -y \
     msmtp \
-    msmtp \
+    libsasl2-modules \
     ca-certificates \
     && update-ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-COPY tools/setup-msmtp.sh setup-msmtp.sh
-COPY conf/msmtprc /etc/msmtprc
-
+# Copy setup script
+COPY tools/setup-msmtp.sh /setup-msmtp.sh
 RUN chmod +x /setup-msmtp.sh
 
-EXPOSE 25 465 587
-
 ENTRYPOINT ["/setup-msmtp.sh"]
-CMD ["tail", "-f", "/dev/null"]
-
+CMD ["msmtp", "start-fg"]
