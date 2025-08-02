@@ -105,7 +105,7 @@ services:
     ports:
       - "514:514/udp"
     volumes:
-      - ./logs:/var/log/remote
+      - logs-data:/var/log/remote
     networks:
       - inception
     restart: always
@@ -130,6 +130,12 @@ volumes:
             type: none
             o: bind
             device: /home/zel-khad/data/database
+    logs-data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/zel-khad/data/logs
 
 networks:
   inception:

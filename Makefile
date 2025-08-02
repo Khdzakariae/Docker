@@ -6,6 +6,7 @@ DOCKER_COMPOSE_FILE = ./srcs/docker-compose.yml
 build:
 	mkdir -p /home/zel-khad/data/database
 	mkdir -p /home/zel-khad/data/web
+	mkdir -p /home/zel-khad/data/logs
 	@$(DOCKER_COMPOSE)  -f $(DOCKER_COMPOSE_FILE) up --build -d
 
 kill:
@@ -20,6 +21,7 @@ clean:
 fclean: clean
 	rm -rf /home/zel-khad/data/database
 	rm -rf /home/zel-khad/data/web
+	rm -rf /home/zel-khad/data/logs
 	docker system prune -a -f
 
 restart: clean build

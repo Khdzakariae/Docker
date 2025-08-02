@@ -7,7 +7,7 @@ RUN apt-get update && \
 # Enable UDP 514 logging
 RUN sed -i '/imudp/s/^#//g' /etc/rsyslog.conf && \
     echo 'input(type="imudp" port="514")' >> /etc/rsyslog.conf && \
-    echo 'template(name="RemoteFormat" type="string" string="/var/log/remote/%HOSTNAME%/%PROGRAMNAME%.log")' >> /etc/rsyslog.conf && \
+    echo 'template(name="RemoteFormat" type="string" string="/var/log/remote/nginx-logs/%PROGRAMNAME%.log")' >> /etc/rsyslog.conf && \
     echo 'if ($fromhost-ip != "127.0.0.1") then { action(type="omfile" dynaFile="RemoteFormat") }' >> /etc/rsyslog.conf
 
 EXPOSE 514/udp
