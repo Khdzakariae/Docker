@@ -5,6 +5,7 @@ apt-get update && \
 apt-get install -y nginx openssh-server vim sudo openssl php8.2-fpm && \
 rm -rf /var/lib/apt/lists/*
 
+
 mkdir -p /var/cache/nginx/client_temp /var/run/nginx /tmp/nginx /etc/nginx/ssl
 chown -R www-data:www-data /var/cache/nginx /var/run/nginx /tmp/nginx /etc/nginx/ssl
 
@@ -20,4 +21,7 @@ sed -i '/http {/a \
                     '\''"$http_user_agent" "$http_x_forwarded_for"'\''; \
     access_log /var/log/nginx/access.log;' /etc/nginx/nginx.conf
 
+# sudo sed -i "s/\$DOMAIN_NAME/$DOMAIN_NAME/g" /etc/nginx/conf.d/nginx.conf
 mkdir -p website
+
+

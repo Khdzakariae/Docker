@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:12
 
 COPY tools/setup.sh /setup.sh
 COPY conf/redis.conf /etc/redis/redis.conf

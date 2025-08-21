@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:12
 
 COPY conf/vsftpd.conf /etc/vsftpd.conf
 COPY tools/setup-ftp.sh /setup-ftp.sh

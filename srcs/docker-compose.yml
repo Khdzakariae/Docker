@@ -10,6 +10,8 @@ services:
     restart: always
 
   mariadb-container:
+    env_file:
+      - .env
     build:
       context: ./requirements/mariadb/
     container_name: mariadb-container
@@ -19,11 +21,11 @@ services:
         - mariadb-data:/var/lib/mysql
     networks:
       - inception
-    env_file:
-      - .env
     restart: always
 
   wordpress-container:
+    env_file:
+      - .env
     build: 
       context: ./requirements/wordpress/
     container_name: wordpress-container
@@ -36,8 +38,6 @@ services:
       - mariadb-container
     networks:
       - inception
-    env_file:
-      - .env
     restart: always
     healthcheck:
       test: ["CMD", "sh", "-c", "nc -z localhost 9000"]
@@ -46,6 +46,8 @@ services:
       retries: 5
 
   nginx-container:
+    env_file:
+      - .env
     build: 
       context: ./requirements
       dockerfile: nginx/Dockerfile
@@ -73,6 +75,8 @@ services:
     restart: always
   
   ftp-container:
+    env_file:
+      - .env
     build: ./requirements/bonus/ftp/
     container_name : ftp-container
     ports:
@@ -80,19 +84,6 @@ services:
       - "21000-21010:21000-21010"
     volumes:
       - wordpress-data:/var/www/html
-    networks:
-      - inception
-    env_file:
-      - .env
-    restart: always
-
-  msmtp-container:
-    env_file:
-      - .env
-    build: ./requirements/bonus/msmtp
-    container_name: msmtp-container
-    ports:
-      - "25:25"
     networks:
       - inception
     restart: always
@@ -117,25 +108,25 @@ volumes:
         driver_opts:
             type: none
             o: bind
-            device: /Users/zel-khad/data/web
+            device: /home/zel-khad/data/web
     wordpress-data:
         driver: local
         driver_opts:
             type: none
             o: bind
-            device: /Users/zel-khad/data/web
+            device: /home/zel-khad/data/web
     mariadb-data:
         driver: local
         driver_opts:
             type: none
             o: bind
-            device: /Users/zel-khad/data/database
+            device: /home/zel-khad/data/database
     logs-data:
         driver: local
         driver_opts:
             type: none
             o: bind
-            device: /Users/zel-khad/data/logs
+            device: /home/zel-khad/data/logs
 
 networks:
   inception:

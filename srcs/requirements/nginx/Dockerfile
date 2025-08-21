@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:12
 
 COPY nginx/tools/setup.sh /setup.sh
 COPY nginx/conf/nginx.conf /etc/nginx/conf.d/nginx.conf

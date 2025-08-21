@@ -12,7 +12,7 @@ cp wp-config-sample.php wp-config.php
 sudo sed -i "s/database_name_here/$WORDPRESS_DB_NAME/g" wp-config.php 
 sudo sed -i "s/username_here/$WORDPRESS_DB_USER/g" wp-config.php 
 sudo sed -i "s/password_here/$WORDPRESS_DB_PASSWORD/g" wp-config.php 
-sudo sed -i "s/define( 'DB_HOST', 'localhost' );/define( 'DB_HOST', 'mariadb-container:3306' );/g" wp-config.php 
+sudo sed -i "s/define( 'DB_HOST', 'localhost' );/define( 'DB_HOST', '$WORDPRESS_DB_HOST' );/g" wp-config.php 
 sudo sed -i "/That's all, stop editing/i define('FS_METHOD', 'direct');" wp-config.php
 
 echo "Waiting for MariaDB to be ready..."
@@ -22,7 +22,7 @@ done
 
 wp core install \
   --path="/var/www/html" \
-  --url="https://zel-khad.42.fr" \
+  --url="https://${DOMAIN_NAME}" \
   --title="inception" \
   --admin_user=$ADMIN_USER \
   --admin_password=$ADMIN_PASSWORD \
